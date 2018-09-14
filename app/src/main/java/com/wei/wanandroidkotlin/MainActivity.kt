@@ -11,6 +11,7 @@ import android.support.v7.widget.AppCompatSeekBar
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import com.wei.wanandroidkotlin.rx.RxBus
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 
@@ -31,20 +32,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun textRx() {
-        Observable.create(ObservableOnSubscribe<String> { emitter ->
-            emitter.onNext("I come from observable subscribe!")
-        }).map {
-            kotlin.run {
-                return@map it.length
-            }
-        }
-//                .map { t: Int -> t.let {
-//                    t.toString().length
-//                    Log.e(TAG, "2nd map : " + t)
-//                } }
+        RxBus.get().accept(100)
                 .subscribe {
-                    Log.e(TAG, "subscribe : " + it)
+                    Log.e(TAG, it.toString())
                 }
+
+        window.decorView.postDelayed({
+            Log.e(TAG, "发送")
+            RxBus.get().post(100)
+        }, 1000)
     }
 
     private fun initView() {

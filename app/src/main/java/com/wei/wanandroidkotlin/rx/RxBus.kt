@@ -48,8 +48,9 @@ class RxBus {
     /**
      *  接收的事件id
      */
-    fun accept(vararg id: Int) {
+    fun accept(vararg id: Int): RxBus {
         id.forEach { eventIds.add(it) }
+        return this
     }
 
     fun subscribe(block: (event: Event) -> Unit) {
