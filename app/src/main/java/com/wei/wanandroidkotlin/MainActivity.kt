@@ -12,6 +12,8 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.wei.wanandroidkotlin.rx.RxBus
+import com.wei.wanandroidkotlin.rx.RxJavaOperators
+import com.wei.wanandroidkotlin.rx.RxOperators
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.e(TAG, num.toString())
         initView()
+//        RxJavaOperators.testFlatMap()
+//        RxJavaOperators.testZip()
+//        RxOperators().testFlatMap()
         textRx()
     }
 
@@ -41,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             Log.e(TAG, "发送")
             RxBus.get().post(100)
         }, 1000)
+
     }
 
     private fun initView() {
