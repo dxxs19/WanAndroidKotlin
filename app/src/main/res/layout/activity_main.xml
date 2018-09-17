@@ -6,6 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:inputType="number"
+            android:hint="请输入手机号" />
+
+        <EditText
+            android:id="@+id/et_pass"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:inputType="numberPassword"
+            android:hint="请输入密码" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:enabled="false"
+            android:text="登录" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
@@ -21,28 +55,28 @@
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.wei.wanandroidkotlin.widgets.GridPasswordView
         android:id="@+id/pswView"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:gpvTextColor="#2196F3"
-        app:gpvTextSize="25sp"
+        app:gpvGridColor="#ffffff"
         app:gpvLineColor="#a4a9bd"
         app:gpvLineWidth="1dp"
-        app:gpvGridColor="#ffffff"
         app:gpvPasswordLength="6"
         app:gpvPasswordTransformation="*"
-        app:gpvPasswordType="numberPassword"/>
+        app:gpvPasswordType="numberPassword"
+        app:gpvTextColor="#2196F3"
+        app:gpvTextSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

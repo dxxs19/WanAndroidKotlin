@@ -24,6 +24,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -186,16 +187,17 @@ public class RxJavaOperators {
                 emitter.onNext(24);
                 emitter.onNext(33);
             }
-        }).flatMap(new Function<Integer, ObservableSource<String>>() {
+        }).filter(new Predicate<Integer>() {
             @Override
-            public ObservableSource<String> apply(Integer integer) throws Exception {
-                List<String> strs = new ArrayList<>();
-                for (int i = 0; i < 4; i++) {
-                    strs.add(integer + "");
-                }
-                return Observable.fromIterable(strs).delay(10, TimeUnit.MILLISECONDS);
+            public boolean test(Integer integer) throws Exception {
+                return integer > 30;
             }
-        }).subscribe(observer);
+        }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                Log.e(TAG, integer + "");
+            }
+        });
     }
 
     public static void testZip() {

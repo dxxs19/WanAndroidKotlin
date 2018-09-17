@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatSeekBar
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.wei.wanandroidkotlin.rx.RxBus
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private var contentTv: TextView? = null
     private var seekBar: AppCompatSeekBar? = null
+    private var etPhone: TextView? = null
+    private var etPass: TextView? = null
+    private var btnLogin: Button? = null
     private val num: Int
         get() = 10
 
@@ -32,10 +36,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun test() {
-//        RxJavaOperators.testFlatMap()
+        RxJavaOperators.testFlatMap()
 //        RxJavaOperators.testZip()
-        RxJavaOperators.testFlowable()
-        RxJavaOperators.testInterval()
+//        RxJavaOperators.testFlowable()
+//        RxJavaOperators.testInterval()
 //        RxOperators().testFlatMap()
 
     }
