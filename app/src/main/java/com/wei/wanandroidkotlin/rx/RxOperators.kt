@@ -8,14 +8,14 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 class RxOperators {
-    private val TAG = javaClass.name
+    val TAG = javaClass.name
     companion object {
         val testArray = arrayListOf(1, 29, 20, 32, 11, 19)
     }
+
     private val observer = object : Observer<String> {
 
         override fun onSubscribe(d: Disposable) {
-
         }
 
         override fun onNext(s: String) {

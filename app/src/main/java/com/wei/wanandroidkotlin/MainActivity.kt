@@ -13,9 +13,6 @@ import android.widget.TextView
 import android.widget.Toast
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxJavaOperators
-import com.wei.wanandroidkotlin.rx.RxOperators
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,13 +27,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.e(TAG, num.toString())
         initView()
-//        RxJavaOperators.testFlatMap()
-//        RxJavaOperators.testZip()
-//        RxOperators().testFlatMap()
-        textRx()
+        textRxBus()
+        window.decorView.postDelayed({ test() }, 100L)
     }
 
-    private fun textRx() {
+    private fun test() {
+//        RxJavaOperators.testFlatMap()
+//        RxJavaOperators.testZip()
+        RxJavaOperators.testFlowable()
+        RxJavaOperators.testInterval()
+//        RxOperators().testFlatMap()
+
+    }
+
+    private fun textRxBus() {
         RxBus.get().accept(100)
                 .subscribe {
                     Log.e(TAG, it.toString())
