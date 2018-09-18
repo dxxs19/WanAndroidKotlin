@@ -15,6 +15,8 @@ import android.provider.MediaStore
  * @since 2018/9/7
  */
 object UriUtil {
+    private const val RAW_PREFIX = "raw:"
+
     /**
      * <br></br>功能简述:4.4及以上获取图片的方法
      * <br></br>功能详细描述:
@@ -42,6 +44,10 @@ object UriUtil {
             } else if (isDownloadsDocument(uri)) {
 
                 val id = DocumentsContract.getDocumentId(uri)
+                if (id.startsWith(RAW_PREFIX))
+                {
+                    return id.substring(RAW_PREFIX.length)
+                }
                 val contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
 

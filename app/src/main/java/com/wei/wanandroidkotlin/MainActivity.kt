@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun test() {
-        RxJavaOperators.testFlatMap()
+        RxJavaOperators.testFilter()
 //        RxJavaOperators.testZip()
 //        RxJavaOperators.testFlowable()
 //        RxJavaOperators.testInterval()
@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity() {
         contentTv = findViewById(R.id.tv_content)
         contentTv?.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "*/*"//设置类型，我这里是任意类型，任意后缀的可以这样写。
+            //设置类型，我这里是任意类型，任意后缀的可以这样写。
+            intent.type = "*/*"
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             startActivityForResult(intent, 1)
         }
