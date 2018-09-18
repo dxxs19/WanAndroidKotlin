@@ -44,8 +44,7 @@ object UriUtil {
             } else if (isDownloadsDocument(uri)) {
 
                 val id = DocumentsContract.getDocumentId(uri)
-                if (id.startsWith(RAW_PREFIX))
-                {
+                if (id.startsWith(RAW_PREFIX)) {
                     return id.substring(RAW_PREFIX.length)
                 }
                 val contentUri = ContentUris.withAppendedId(

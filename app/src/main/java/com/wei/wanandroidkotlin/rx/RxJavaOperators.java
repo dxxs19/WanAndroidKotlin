@@ -3,6 +3,8 @@ package com.wei.wanandroidkotlin.rx;
 
 import android.util.Log;
 
+import com.wei.wanandroidkotlin.aop.annotation.TimeTrace;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -204,5 +206,4 @@ public class RxJavaOperators {
             }
         }).subscribe(observer);
     }
-
 }

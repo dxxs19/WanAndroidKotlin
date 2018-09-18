@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.wei.wanandroidkotlin.aop.AOPTest
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxJavaOperators
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 //        RxJavaOperators.testFlowable()
 //        RxJavaOperators.testInterval()
 //        RxOperators().testFlatMap()
-
+        AOPTest.login("xxx", "123")
     }
 
     private fun textRxBus() {
