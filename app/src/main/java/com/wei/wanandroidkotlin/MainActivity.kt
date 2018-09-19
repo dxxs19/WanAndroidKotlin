@@ -37,12 +37,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun test() {
-        RxJavaOperators.testFilter()
+//        RxJavaOperators.testFilter()
 //        RxJavaOperators.testZip()
 //        RxJavaOperators.testFlowable()
 //        RxJavaOperators.testInterval()
 //        RxOperators().testFlatMap()
-        AOPTest.login("xxx", "123")
+        AOPTest.login("xxxx", "123")
     }
 
     private fun textRxBus() {

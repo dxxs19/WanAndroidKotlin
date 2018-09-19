@@ -7,6 +7,8 @@ import com.wei.wanandroidkotlin.aop.annotation.TimeTrace;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -29,15 +31,10 @@ public class TimeTraceAspect {
     public void pointCut() {
     }
 
-//    @Before("pointCut()")
-//    public void before(JoinPoint joinPoint) {
-//        Log.e(TAG, "before pointcut ...");
-//    }
-//
-//    @After("pointCut()")
-//    public void after(JoinPoint joinPoint) {
-//        Log.e(TAG, "after pointcut ...");
-//    }
+    @Before("pointCut()")
+    public void before(JoinPoint joinPoint) {
+        Log.e(TAG, "before pointcut ...");
+    }
 
     /**
      * 三、在切面类中定义Advance(通知)
@@ -52,7 +49,7 @@ public class TimeTraceAspect {
         // 获取注解
         TimeTrace timeTraceAnnotation = methodSignature.getMethod().getAnnotation(TimeTrace.class);
         String value = timeTraceAnnotation.value();
-        Object proceed = null;
+        Object proceed  =null;
         try {
             // 执行原方法体
             proceed = joinPoint.proceed();
@@ -74,5 +71,20 @@ public class TimeTraceAspect {
             throwable.printStackTrace();
         }
         return proceed;
+    }
+
+    @After("pointCut()")
+    public void after(JoinPoint joinPoint) {
+        Log.e(TAG, "after pointcut ...");
+    }
+
+    @AfterReturning("pointCut()")
+    public void afterReturning(JoinPoint joinPoint, Object returnValue) {
+        Log.e(TAG, "afterReturning : " + returnValue);
+    }
+
+    @AfterThrowing(value = "pointCut()", throwing = "ex")
+    public void afterThrowing(Throwable throwable) {
+        Log.e(TAG, "ex = " + throwable.getMessage());
     }
 }
