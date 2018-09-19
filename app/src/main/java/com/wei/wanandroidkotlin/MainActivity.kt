@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 //        RxOperators().testFlatMap()
 //        AOPTest.login("xxxx", "123")
         AOPTest.computePlus(10, 20000000)
+        /// TODO 分支测试
     }
 
     private fun textRxBus() {
