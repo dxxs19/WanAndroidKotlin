@@ -15,9 +15,16 @@ public class AOPTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if ("xxx".equals(name) && "123".equals(pass)) {
-            return true;
+        return "xxx".equals(name) && "123".equals(pass);
+    }
+
+    @TimeTrace("累加运算结束，...")
+    public static long computePlus(int from, int to) {
+        int result = 0;
+        for ( ; from <= to; from ++)
+        {
+            result += from;
         }
-        return false;
+        return result;
     }
 }

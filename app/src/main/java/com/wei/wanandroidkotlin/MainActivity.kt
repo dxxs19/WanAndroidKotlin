@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
 //        RxJavaOperators.testFlowable()
 //        RxJavaOperators.testInterval()
 //        RxOperators().testFlatMap()
-        AOPTest.login("xxxx", "123")
+//        AOPTest.login("xxxx", "123")
+        AOPTest.computePlus(10, 20000000)
     }
 
     private fun textRxBus() {
