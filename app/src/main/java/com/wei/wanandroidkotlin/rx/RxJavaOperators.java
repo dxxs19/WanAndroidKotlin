@@ -3,8 +3,6 @@ package com.wei.wanandroidkotlin.rx;
 
 import android.util.Log;
 
-import com.wei.wanandroidkotlin.aop.annotation.TimeTrace;
-
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -17,11 +15,13 @@ import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
@@ -141,6 +141,7 @@ public class RxJavaOperators {
     }
 
     private static Subscription subscription;
+
     public static void testInterval() {
         Flowable.interval(1, TimeUnit.MICROSECONDS)
                 .onBackpressureDrop()
@@ -196,6 +197,20 @@ public class RxJavaOperators {
                 Log.e(TAG, integer + "");
             }
         });
+    }
+
+    public static void testFlatMap() {
+        Observable.just(1)
+                .flatMap(new Function<Integer, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(Integer integer) throws Exception {
+                        return getObservable(integer);
+                    }
+                }).subscribe(observer);
+    }
+
+    private static ObservableSource<String> getObservable(Integer integer) {
+        return Observable.just("I'm come from 'getObservable' method!");
     }
 
     public static void testZip() {

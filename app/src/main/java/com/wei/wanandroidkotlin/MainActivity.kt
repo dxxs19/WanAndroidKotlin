@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity() {
 //        RxJavaOperators.testInterval()
 //        RxOperators().testFlatMap()
 //        AOPTest.login("xxxx", "123")
-        AOPTest.computePlus(10, 20000000)
-        /// TODO 分支测试
+//        AOPTest.computePlus(10, 20000000)
+        RxJavaOperators.testFlatMap()
     }
 
     private fun textRxBus() {
