@@ -1,23 +1,23 @@
 package com.wei.wanandroidkotlin
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatSeekBar
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import com.wei.wanandroidkotlin.aop.AOPTest
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxJavaOperators
+import com.wei.wanandroidkotlin.util.UIUtil
+import com.wei.wanandroidkotlin.widgets.SideBar
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SideBar.OnChooseLetterChangedListener, com.wei.wanandroidkotlin.widget.SideBar.OnTouchLetterListener {
+
     private val TAG = "MainActivity"
     private var contentTv: TextView? = null
     private var seekBar: AppCompatSeekBar? = null
@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private var btnLogin: Button? = null
     private val num: Int
         get() = 10
+    private lateinit var sideBar: SideBar
+    private lateinit var kotlinSideBar: com.wei.wanandroidkotlin.widget.SideBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,10 +76,26 @@ class MainActivity : AppCompatActivity() {
 //            seekBar?.thumb?.setColorFilter(Color.parseColor("#ec6a88"), PorterDuff.Mode.SRC_ATOP)
 //        }
 //        startActivity(Intent(this, UpdateActivity :: class.java))
+        sideBar = findViewById(R.id.sideBar)
+        sideBar.setOnTouchingLetterChangedListener(this)
+
+        kotlinSideBar = findViewById(R.id.kotlin_sideBar)
+        kotlinSideBar.setSingleHeight(UIUtil.dpToPx(20))
+        kotlinSideBar.setData(null)
+        kotlinSideBar.setOnTouchLetterChangeListener(this)
     }
 
-    fun double(num: Int): Int {
-        return num * 2
+    override fun onChooseLetter(s: String?) {
+        Log.e(TAG, s)
+    }
+
+    override fun onNoChooseLetter() {
+
+    }
+
+    override fun onTouchLetterChanged(index: Int, s: String, isFocus: Boolean) {
+        val str = index.toString() + ", " + s + ", " + isFocus
+        Log.e(TAG, str)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -91,52 +109,13 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "无法发送大于30MB的文件", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    // api < 19 : /storage/emulated/0/server.log.5
                     val path = UriUtil.getPath(this, uri)
-                    Log.e(TAG, "uri : " + uri + ", path : " + path + ", 文件名 : " + path?.substring(path.lastIndexOf("/") + 1) + ", size = " + conversionUnit(size))
+                    Log.e(TAG, "uri : $uri" + ", path : $path" + ", 文件名 : " + path?.substring(path.lastIndexOf("/") + 1) + ", size = $size")
                     Log.e(TAG, "realpath : " + UriUtil.getPath(this, uri))
-//                    Log.e(TAG, "realpath : " + getRealFilePath(uri) )
                 }
             }
         }
     }
 
-    private fun getRealFilePath(uri: Uri?): String? {
-        if (null == uri) return null
-        val scheme = uri.scheme
-        var data: String? = null
-        var size: Int
-        if (scheme == null)
-            data = uri.path
-        else if (ContentResolver.SCHEME_FILE == scheme) {
-            data = uri.path
-        } else if (ContentResolver.SCHEME_CONTENT == scheme) {
-            val cursor = contentResolver.query(uri, arrayOf(MediaStore.Images.ImageColumns.DATA), null, null, null)
-            if (null != cursor) {
-                if (cursor.moveToFirst()) {
-                    val index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-                    if (index > -1) {
-                        data = cursor.getString(index)
-                    }
-                }
-                cursor.close()
-            }
-        }
-        return data
-    }
-
-    private fun conversionUnit(size: Int): String {
-        var result = StringBuilder()
-        if (size < 1000) {
-            result = result.append(size).append(" B")
-        } else if (size < 1000 * 1000) {
-            result = result.append(size / 1000)
-                    .append(" KB")
-        } else {
-            result = result.append(size / (1000 * 1000))
-                    .append(" MB")
-        }
-        return result.toString()
-    }
 }
 
