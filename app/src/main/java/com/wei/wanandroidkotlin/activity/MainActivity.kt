@@ -1,4 +1,4 @@
-package com.wei.wanandroidkotlin
+package com.wei.wanandroidkotlin.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -10,6 +10,8 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.wei.wanandroidkotlin.R
+import com.wei.wanandroidkotlin.UriUtil
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxJavaOperators
 import com.wei.wanandroidkotlin.util.UIUtil
