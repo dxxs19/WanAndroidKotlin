@@ -6,6 +6,7 @@ import android.util.Log;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.BackpressureStrategy;
@@ -28,7 +29,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RxJavaOperators {
     private final static String TAG = "RxJavaOperators";
-    private static Observer<String> observer = new Observer<String>() {
+    private static Observer observer = new CusObserver<String>();
+
+    static class CusObserver<T> implements Observer<T> {
 
         @Override
         public void onSubscribe(Disposable d) {
@@ -36,8 +39,8 @@ public class RxJavaOperators {
         }
 
         @Override
-        public void onNext(String s) {
-            Log.e(TAG, "结果：" + s);
+        public void onNext(T t) {
+            Log.e(TAG, "结果：" + t);
         }
 
         @Override
@@ -49,7 +52,7 @@ public class RxJavaOperators {
         public void onComplete() {
 
         }
-    };
+    }
     private static Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
         @Override
         public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
@@ -213,6 +216,17 @@ public class RxJavaOperators {
         return Observable.just("I'm come from 'getObservable' method!");
     }
 
+    public static void testMap() {
+        Observable.just(1)
+                .map(new Function<Integer, String>() {
+                    @Override
+                    public String apply(Integer integer) throws Exception {
+                        return null;
+                    }
+                }).subscribe(observer);
+
+    }
+
     public static void testZip() {
         Observable.zip(observable1, observable2, new BiFunction<Integer, String, String>() {
             @Override
@@ -220,5 +234,11 @@ public class RxJavaOperators {
                 return integer + s;
             }
         }).subscribe(observer);
+    }
+
+    static String[] strs = {"1bc", "lajdl", "0212"};
+    public static void testCreate() {
+        Observable.fromIterable((Iterable<?>) Arrays.asList(strs).iterator())
+                .subscribe(new CusObserver<>());
     }
 }

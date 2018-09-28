@@ -14,6 +14,7 @@ import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.UriUtil
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxJavaOperators
+import com.wei.wanandroidkotlin.rx.RxOperators
 import com.wei.wanandroidkotlin.util.UIUtil
 import com.wei.wanandroidkotlin.widgets.SideBar
 
@@ -48,7 +49,9 @@ class MainActivity : AppCompatActivity(), SideBar.OnChooseLetterChangedListener,
 //        RxOperators().testFlatMap()
 //        AOPTest.login("xxxx", "123")
 //        AOPTest.computePlus(10, 20000000)
-        RxJavaOperators.testFlatMap()
+//        RxJavaOperators.testFlatMap()
+        val rxKotlin = RxOperators()
+        rxKotlin.testCreate()
     }
 
     private fun textRxBus() {
@@ -82,8 +85,7 @@ class MainActivity : AppCompatActivity(), SideBar.OnChooseLetterChangedListener,
         sideBar.setOnTouchingLetterChangedListener(this)
 
         kotlinSideBar = findViewById(R.id.kotlin_sideBar)
-        kotlinSideBar.setSingleHeight(UIUtil.dpToPx(20))
-        kotlinSideBar.setData(null)
+//        kotlinSideBar.setSingleHeight(UIUtil.dpToPx(11))
         kotlinSideBar.setOnTouchLetterChangeListener(this)
     }
 

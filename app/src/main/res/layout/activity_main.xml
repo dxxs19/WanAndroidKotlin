@@ -9,35 +9,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:hint="请输入手机号"
             android:inputType="number"
-            android:hint="请输入手机号" />
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/et_pass"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:hint="请输入密码"
             android:inputType="numberPassword"
-            android:hint="请输入密码" />
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:enabled="false"
+            android:padding="10dp"
             android:text="登录" />
     </LinearLayout>
 
@@ -83,22 +83,30 @@
     <Button
         android:layout_width="300dp"
         android:layout_height="48dp"
+        android:background="@drawable/selector_ripple"
         android:text="水波纹点击效果"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/selector_ripple"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.wei.wanandroidkotlin.widget.SideBar
-        android:id="@+id/kotlin_sideBar"
+    <RelativeLayout
         android:layout_width="25dp"
         android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <com.wei.wanandroidkotlin.widget.SideBar
+            android:id="@+id/kotlin_sideBar"
+            android:layout_marginTop="50dp"
+            android:layout_width="25dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
 
     <com.wei.wanandroidkotlin.widgets.SideBar
         android:id="@+id/sideBar"
         android:layout_width="25dp"
         android:layout_height="match_parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

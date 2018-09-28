@@ -4,15 +4,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Paint.Align
 import android.graphics.Typeface
 import android.support.annotation.ColorInt
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import com.wei.wanandroidkotlin.Constants
-import com.wei.wanandroidkotlin.util.DrawUtil
 import com.wei.wanandroidkotlin.util.UIUtil
 
 
@@ -50,7 +49,7 @@ class SideBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
     // 准备好的A~Z的字母数组
     var selections: Array<String> = SELECTIONS
 
-    private var showBackground = false
+    private var firstDraw = true
 
     init {
         textSize = UIUtil.dpToPx(TEXT_SIZE_DP)
@@ -68,11 +67,15 @@ class SideBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (showBackground) {
-            // 字母条背后颜色
-            canvas.drawColor(Color.parseColor("#BFBFBF"))
-        }
         val half = height / 2
+
+        val locationArray = IntArray(2)
+        if (firstDraw) {
+            setData(null)
+            firstDraw = false
+            getLocationOnScreen(locationArray)
+            Log.e(javaClass.simpleName, locationArray[1].toString())
+        }
 
         var offset = 0
         when (gravity) {
@@ -100,10 +103,11 @@ class SideBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
             // 要画的字母的x,y坐标
             val posX = width / 2f
-            val posY = (i * letterHeight + letterHeight / 2 + offset).toFloat()
+            var posY = (i * letterHeight + letterHeight / 2 + offset).toFloat()
 
             // 画出字母
-            DrawUtil.drawTextByAlignX(canvas, selections[i], posX, posY, paint, Align.CENTER)
+//            DrawUtil.drawTextByAlignX(canvas, selections[i], posX, posY, paint, Align.CENTER)
+            canvas.drawText(selections[i], posX, posY, paint)
 
             // 重新设置画笔
             paint.reset()
@@ -134,7 +138,6 @@ class SideBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val oldChoose = choose
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_DOWN -> {
-                showBackground = true
                 // view有字母部分的高度，其他部分不接受touch事件
                 if (y > realHeight) {
                     return false
@@ -157,8 +160,7 @@ class SideBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                showBackground = false
-                choose = -1
+//                choose = -1
                 invalidate()
 
                 if (index <= 0) {
