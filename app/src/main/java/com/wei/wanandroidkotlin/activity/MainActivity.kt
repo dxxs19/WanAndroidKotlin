@@ -12,11 +12,16 @@ import android.widget.TextView
 import android.widget.Toast
 import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.UriUtil
+import com.wei.wanandroidkotlin.net.GetRequestApi
+import com.wei.wanandroidkotlin.net.response.Translation1
+import com.wei.wanandroidkotlin.net.response.Translation2
+import com.wei.wanandroidkotlin.net.retrofit.RetrofitHelper
 import com.wei.wanandroidkotlin.rx.RxBus
-import com.wei.wanandroidkotlin.rx.RxJavaOperators
 import com.wei.wanandroidkotlin.rx.RxOperators
-import com.wei.wanandroidkotlin.util.UIUtil
 import com.wei.wanandroidkotlin.widgets.SideBar
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 
 class MainActivity : AppCompatActivity(), SideBar.OnChooseLetterChangedListener, com.wei.wanandroidkotlin.widget.SideBar.OnTouchLetterListener {
@@ -50,8 +55,38 @@ class MainActivity : AppCompatActivity(), SideBar.OnChooseLetterChangedListener,
 //        AOPTest.login("xxxx", "123")
 //        AOPTest.computePlus(10, 20000000)
 //        RxJavaOperators.testFlatMap()
+//        RxJavaOperators.testCreate()
         val rxKotlin = RxOperators()
-        rxKotlin.testCreate()
+//        rxKotlin.testCreate()
+//        rxKotlin.testBuffer()
+//        testFlatMap()
+        rxKotlin.testCombine()
+    }
+
+    lateinit var observable1: Observable<Translation1>
+    lateinit var observable2: Observable<Translation2>
+    private fun testFlatMap() {
+        val requestApi = RetrofitHelper.getRetrofit("http://fy.iciba.com/").create(GetRequestApi::class.java)
+        observable1 = requestApi.call
+        observable2 = requestApi.call_2
+        observable1.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { t ->
+                    Log.d(TAG, "第1次网络请求成功")
+                    t.show()
+                }
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    // 将网络请求1转换成网络请求2，即发送网络请求2
+                    observable2
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(io.reactivex.functions.Consumer<Translation2> { result ->
+                    Log.d(TAG, "第2次网络请求成功")
+                    result.show()
+                }, io.reactivex.functions.Consumer<Throwable> {
+                    Log.d(TAG, "第2次网络请求失败")
+                })
     }
 
     private fun textRxBus() {

@@ -6,7 +6,10 @@ import android.util.Log;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.BackpressureStrategy;
@@ -31,7 +34,7 @@ public class RxJavaOperators {
     private final static String TAG = "RxJavaOperators";
     private static Observer observer = new CusObserver<String>();
 
-    static class CusObserver<T> implements Observer<T> {
+    static class CusObserver<T> implements Observer<T>, Disposable {
 
         @Override
         public void onSubscribe(Disposable d) {
@@ -51,6 +54,16 @@ public class RxJavaOperators {
         @Override
         public void onComplete() {
 
+        }
+
+        @Override
+        public void dispose() {
+
+        }
+
+        @Override
+        public boolean isDisposed() {
+            return false;
         }
     }
     private static Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
@@ -225,6 +238,7 @@ public class RxJavaOperators {
                     }
                 }).subscribe(observer);
 
+        List list = new ArrayList();
     }
 
     public static void testZip() {
@@ -238,7 +252,14 @@ public class RxJavaOperators {
 
     static String[] strs = {"1bc", "lajdl", "0212"};
     public static void testCreate() {
-        Observable.fromIterable((Iterable<?>) Arrays.asList(strs).iterator())
-                .subscribe(new CusObserver<>());
+        Observable<String> stringObservable = Observable.defer(new Callable<ObservableSource<? extends String>>() {
+            @Override
+            public ObservableSource<? extends String> call() throws Exception {
+                return Observable.just(strs[0]);
+            }
+        });
+
+        strs[0] = "abcdefg";
+        stringObservable.subscribe(new CusObserver<>());
     }
 }
