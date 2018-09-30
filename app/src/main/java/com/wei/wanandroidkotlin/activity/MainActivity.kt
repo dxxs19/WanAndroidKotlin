@@ -57,10 +57,12 @@ class MainActivity : AppCompatActivity(), SideBar.OnChooseLetterChangedListener,
 //        RxJavaOperators.testFlatMap()
 //        RxJavaOperators.testCreate()
         val rxKotlin = RxOperators()
-//        rxKotlin.testCreate()
+        rxKotlin.testCreate()
 //        rxKotlin.testBuffer()
 //        testFlatMap()
-        rxKotlin.testCombine()
+//        rxKotlin.testCombine()
+//        rxKotlin.testFilter()
+//        rxKotlin.testBoolean()
     }
 
     lateinit var observable1: Observable<Translation1>
