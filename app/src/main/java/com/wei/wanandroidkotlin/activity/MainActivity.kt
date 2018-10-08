@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.View
 import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.common.QuickAdapter
 import com.wei.wanandroidkotlin.model.ButtonBean
@@ -18,7 +19,7 @@ import com.wei.wanandroidkotlin.rx.RxOperators
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.ArrayList
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -111,6 +112,11 @@ class MainActivity : AppCompatActivity() {
         val gridLayoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
+        adapter.setOnClickListener(object : QuickAdapter.OnClickListener<ButtonBean> {
+            override fun onClick(v: View, t: ButtonBean) {
+                Log.e(TAG, t.text)
+            }
+        })
 //        recyclerView.addItemDecoration()
         recyclerView.itemAnimator = DefaultItemAnimator()
     }

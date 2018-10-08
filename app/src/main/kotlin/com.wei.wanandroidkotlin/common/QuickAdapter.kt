@@ -1,5 +1,6 @@
 package com.wei.wanandroidkotlin.common
 
+import android.support.annotation.Nullable
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.widget.TextView
  */
 abstract class QuickAdapter<T> constructor(private val datas: List<T>) : RecyclerView.Adapter<QuickAdapter.VH>() {
 
+    lateinit var clickListener: OnClickListener<T>
     abstract fun getLayoutId(viewType: Int): Int
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -22,10 +24,21 @@ abstract class QuickAdapter<T> constructor(private val datas: List<T>) : Recycle
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         convert(holder, datas[position], position)
+        holder.getConvertView().setOnClickListener{
+            clickListener.onClick(it, datas[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return datas.size
+    }
+
+    fun setOnClickListener(@Nullable l: OnClickListener<T>) {
+        clickListener = l
+    }
+
+    interface OnClickListener<T> {
+        fun onClick(v: View, t: T)
     }
 
     abstract fun convert(holder: VH, data: T, position: Int)
@@ -37,11 +50,14 @@ abstract class QuickAdapter<T> constructor(private val datas: List<T>) : Recycle
         companion object {
             fun get(parent: ViewGroup, layoutId: Int): VH {
                 val convertView = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+                convertView.setOnClickListener{
+
+                }
                 return VH(convertView)
             }
         }
 
-        private fun <T : View> getView(id: Int): T {
+        fun <T : View> getView(id: Int): T {
             var v = views.get(id)
             if (v == null) {
                 v = contentView.findViewById(id)
@@ -62,6 +78,10 @@ abstract class QuickAdapter<T> constructor(private val datas: List<T>) : Recycle
             if (view is Button) {
                 view.text = value
             }
+        }
+
+        fun getConvertView() : View {
+            return contentView
         }
     }
 
