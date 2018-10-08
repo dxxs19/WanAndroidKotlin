@@ -1,112 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"/>
 
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="请输入手机号"
-            android:inputType="number"
-            android:padding="10dp" />
-
-        <EditText
-            android:id="@+id/et_pass"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="请输入密码"
-            android:inputType="numberPassword"
-            android:padding="10dp" />
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:padding="10dp"
-            android:text="登录" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="选择文件"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.wei.wanandroidkotlin.widgets.GridPasswordView
-        android:id="@+id/pswView"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:visibility="gone"
-        app:gpvGridColor="#ffffff"
-        app:gpvLineColor="#a4a9bd"
-        app:gpvLineWidth="1dp"
-        app:gpvPasswordLength="6"
-        app:gpvPasswordTransformation="*"
-        app:gpvPasswordType="numberPassword"
-        app:gpvTextColor="#2196F3"
-        app:gpvTextSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:background="@drawable/selector_ripple"
-        android:text="水波纹点击效果"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RelativeLayout
-        android:layout_width="25dp"
-        android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-
-        <com.wei.wanandroidkotlin.widget.SideBar
-            android:id="@+id/kotlin_sideBar"
-            android:layout_marginTop="50dp"
-            android:layout_width="25dp"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-
-
-    <com.wei.wanandroidkotlin.widgets.SideBar
-        android:id="@+id/sideBar"
-        android:layout_width="25dp"
-        android:layout_height="match_parent"
-        app:layout_constraintRight_toRightOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
