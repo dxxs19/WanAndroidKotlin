@@ -1,13 +1,13 @@
 package com.wei.wanandroidkotlin.activity
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.wei.wanandroidkotlin.R
+import com.wei.wanandroidkotlin.activity.softinput.SoftInputModeActivity
 import com.wei.wanandroidkotlin.common.QuickAdapter
 import com.wei.wanandroidkotlin.model.ButtonBean
 import com.wei.wanandroidkotlin.net.GetRequestApi
@@ -22,32 +22,24 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
-    companion object {
-        private const val TAG = "MainActivity"
+class MainActivity : BaseActivity() {
+    override fun layoutResId(): Int {
+        return R.layout.activity_main
+    }
+
+    override fun initData() {
+        initButtons()
+        textRxBus()
+        window.decorView.postDelayed({ test() }, 100L)
+    }
+
+    override fun initNavBar() {
     }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var buttons: java.util.ArrayList<ButtonBean>
     private val num: Int
         get() = 10
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Log.e(TAG, num.toString())
-        initButtons()
-        initView()
-        textRxBus()
-        window.decorView.postDelayed({ test() }, 100L)
-    }
-
-    private fun initButtons() {
-        buttons = ArrayList()
-        buttons.add(ButtonBean(1, "SoftInputMode软键盘适配"))
-        buttons.add(ButtonBean(1, "Context的几种应用及区别"))
-        buttons.add(ButtonBean(1, "Android版本及对应的Api"))
-    }
 
     private fun test() {
 //        RxJavaOperators.testFilter()
@@ -107,14 +99,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun initView() {
+    override fun initView() {
         recyclerView = findViewById(R.id.recyclerView)
         val gridLayoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
         adapter.setOnClickListener(object : QuickAdapter.OnClickListener<ButtonBean> {
             override fun onClick(v: View, t: ButtonBean) {
-                Log.e(TAG, t.text)
+                clickListener(t.type)
             }
         })
 //        recyclerView.addItemDecoration()
@@ -133,6 +125,35 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun initButtons() {
+        buttons = ArrayList()
+        buttons.add(ButtonBean(1, "SoftInputMode软键盘适配"))
+        buttons.add(ButtonBean(2, "Context的几种应用及区别"))
+        buttons.add(ButtonBean(3, "Android版本及对应的Api"))
+        /// TODO 这里加相应的按钮
+    }
+
+    fun clickListener(id: Int) {
+        when (id) {
+            1 -> testSoftInputMode()
+            2 -> testContext()
+            3 -> testVersionApi()
+            /// TODO 这里对相应按钮的点击事件做处理
+        }
+    }
+
+    private fun testVersionApi() {
+
+    }
+
+    private fun testContext() {
+
+    }
+
+    private fun testSoftInputMode() {
+        startActivity(Intent(context, SoftInputModeActivity::class.java))
     }
 
 }

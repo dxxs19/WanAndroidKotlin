@@ -54,6 +54,7 @@ repositories {
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
+
 final def log = project.logger
 final def variants = project.android.applicationVariants
 
