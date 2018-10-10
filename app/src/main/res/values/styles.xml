@@ -30,4 +30,10 @@
         <item name="android:layout_marginBottom">1dp</item>
     </style>
 
+    <style name="OnePixelActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoDisplay">false</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 </resources>

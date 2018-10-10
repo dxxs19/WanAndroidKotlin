@@ -13,6 +13,12 @@ class App : MultiDexApplication(){
         super.onCreate()
         appContext = applicationContext
     }
+
+    companion object {
+        fun getAppContext() : Context {
+            return appContext
+        }
+    }
 }
 
 lateinit var appContext: Context

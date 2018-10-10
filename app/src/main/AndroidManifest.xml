@@ -15,8 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustUnspecified">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,14 +24,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.softinput.SoftInputModeActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustResize"/>
-
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
         <activity
             android:name=".activity.UpdateActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".keepalive.onepixelactivity.KeepAliveActivity"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="false"
+            android:launchMode="singleInstance"
+            android:theme="@style/OnePixelActivityTheme" />
+
+        <service
+            android:name=".keepalive.foregroundservice.ForegroundService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".keepalive.foregroundservice.AssistService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

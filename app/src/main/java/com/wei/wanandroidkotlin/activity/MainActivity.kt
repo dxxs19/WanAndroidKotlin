@@ -9,6 +9,8 @@ import android.view.View
 import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.activity.softinput.SoftInputModeActivity
 import com.wei.wanandroidkotlin.common.QuickAdapter
+import com.wei.wanandroidkotlin.keepalive.foregroundservice.ForegroundService
+import com.wei.wanandroidkotlin.keepalive.onepixelactivity.KeepAliveManager
 import com.wei.wanandroidkotlin.model.ButtonBean
 import com.wei.wanandroidkotlin.net.GetRequestApi
 import com.wei.wanandroidkotlin.net.response.Translation1
@@ -111,6 +113,13 @@ class MainActivity : BaseActivity() {
         })
 //        recyclerView.addItemDecoration()
         recyclerView.itemAnimator = DefaultItemAnimator()
+
+        KeepAliveManager.registerBroadCast(this)
+    }
+
+    override fun onDestroy() {
+        KeepAliveManager.unRegisterBroadCast(this)
+        super.onDestroy()
     }
 
     private val adapter by lazy {
@@ -154,6 +163,11 @@ class MainActivity : BaseActivity() {
 
     private fun testSoftInputMode() {
         startActivity(Intent(context, SoftInputModeActivity::class.java))
+    }
+
+    override fun onPause() {
+        startService(Intent(this, ForegroundService::class.java))
+        super.onPause()
     }
 
 }
