@@ -2,25 +2,20 @@ package com.wei.wanandroidkotlin.keepalive.foregroundservice
 
 import android.app.Service
 import android.content.Intent
-import android.os.Binder
 import android.os.IBinder
+import com.wei.wanandroidkotlin.activity.MainActivity
 
 class AssistService : Service() {
 
-    var assistService: AssistService? = null
-
     override fun onBind(intent: Intent): IBinder? {
-        return LocalBinder()
+        return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        assistService = this
-        return START_STICKY
+        startForeground(NotificationHelper.NOTIFICATION_ID, NotificationHelper.createNotification(this,
+                Intent(this, MainActivity::class.java)))
+        stopForeground(true)
+        return super.onStartCommand(intent, flags, startId)
     }
 
-    inner class LocalBinder : Binder() {
-        fun getService(): AssistService? {
-            return assistService
-        }
-    }
 }

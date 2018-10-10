@@ -31,7 +31,7 @@
             android:name=".activity.UpdateActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".keepalive.onepixelactivity.KeepAliveActivity"
+            android:name=".keepalive.onepixelactivity.OnePixelActivity"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="false"
             android:launchMode="singleInstance"

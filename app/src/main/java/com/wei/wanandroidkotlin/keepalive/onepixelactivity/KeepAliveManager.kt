@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
 
 /**
  * @author XiangWei
@@ -13,6 +14,7 @@ class KeepAliveManager {
 
     companion object {
 
+        private const val TAG = "KeepAliveManager"
         private var screenStateReceiver: ScreenStateReceiver? = null
 
         fun registerBroadCast(context: Context) {
@@ -34,12 +36,19 @@ class KeepAliveManager {
     class ScreenStateReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (Intent.ACTION_SCREEN_ON == intent?.action || Intent.ACTION_USER_PRESENT == intent?.action) {
-                /// TODO 销毁1像素activity
-                KeepAliveActivity.destroyActivity()
+                // 销毁1像素activity
+                val action = intent.action
+                Log.e(TAG, "收到".plus(action).plus( "广播"))
+                context?.sendBroadcast(Intent(OnePixelActivity.ACTION_FINISH))
             } else if (Intent.ACTION_SCREEN_OFF == intent?.action) {
-                /// TODO 开启1像素activity，提高进程优先级
-                KeepAliveActivity.showActivity()
+                // 开启1像素activity，提高进程优先级
+                Log.e(TAG, "收到熄屏广播")
+                val onePixelIntent = Intent(context, OnePixelActivity::class.java)
+                onePixelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context?.startActivity(onePixelIntent)
             }
         }
     }
+
+
 }

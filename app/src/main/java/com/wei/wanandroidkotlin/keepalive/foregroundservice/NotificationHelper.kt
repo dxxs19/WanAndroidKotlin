@@ -12,6 +12,8 @@ import android.support.v4.app.NotificationCompat
  */
 object NotificationHelper {
 
+    const val NOTIFICATION_ID = 0x0011
+
     fun createNotification(context: Context, intent: Intent): Notification {
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val notificationBuilder = NotificationCompat.Builder(context, "")
