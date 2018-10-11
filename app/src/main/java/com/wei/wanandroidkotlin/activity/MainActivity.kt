@@ -42,6 +42,7 @@ class MainActivity : BaseActivity() {
     private lateinit var buttons: java.util.ArrayList<ButtonBean>
     private val num: Int
         get() = 10
+    private var serviceIntent: Intent? = null
 
     private fun test() {
 //        RxJavaOperators.testFilter()
@@ -166,9 +167,14 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onPause() {
-        startService(Intent(this, ForegroundService::class.java))
+        serviceIntent = Intent(this, ForegroundService::class.java)
+        startService(serviceIntent)
         super.onPause()
     }
 
+    override fun onResume() {
+        super.onResume()
+        serviceIntent?.let { stopService(serviceIntent) }
+    }
 }
 

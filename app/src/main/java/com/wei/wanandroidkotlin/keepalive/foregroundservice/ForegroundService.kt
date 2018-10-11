@@ -14,6 +14,14 @@ class ForegroundService : Service() {
         private const val TAG = "ForegroundService"
     }
 
+    private var thread: Thread? = null
+    private var stopThread: Boolean? = false
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.e(TAG, "--- onCreate ---")
+    }
+
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
@@ -21,7 +29,13 @@ class ForegroundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         setForeground()
         // 测试服务是否运行
-//        Thread(mRunnable).start()
+        thread = thread ?: Thread(mRunnable)
+        thread?.let {
+            if (!it.isAlive) {
+                it.start()
+            }
+        }
+        Log.e(TAG, "--- onStartCommand ---")
         return START_STICKY
     }
 
@@ -35,12 +49,13 @@ class ForegroundService : Service() {
     }
 
     private fun getNotification(): Notification {
-        return NotificationHelper.createNotification(this,
-                Intent(this, MainActivity::class.java))
+//        return NotificationHelper.createNotification(this,
+//                Intent(this, MainActivity::class.java))
+        return Notification()
     }
 
     private var mRunnable: Runnable = Runnable {
-        while (true) {
+        while (stopThread == false) {
             Log.e(TAG, "" + System.currentTimeMillis())
             try {
                 Thread.sleep(1000)
@@ -53,6 +68,8 @@ class ForegroundService : Service() {
 
     override fun onDestroy() {
         stopForeground(true)
+        Log.e(TAG, "--- onDestroy ---")
+        stopThread = true
         super.onDestroy()
     }
 }
