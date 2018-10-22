@@ -1,5 +1,6 @@
 package com.wei.wanandroidkotlin.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
@@ -18,13 +19,18 @@ import com.wei.wanandroidkotlin.net.response.Translation2
 import com.wei.wanandroidkotlin.net.retrofit.RetrofitHelper
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxOperators
+import com.wei.wanandroidkotlin.widgets.imagedrag.PostImagesActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import me.nereo.multi_image_selector.MultiImageSelector
+import me.nereo.multi_image_selector.MultiImageSelectorActivity
 import java.util.*
 
 
 class MainActivity : BaseActivity() {
+    private val REQUEST_IMAGE = 1001
+
     override fun layoutResId(): Int {
         return R.layout.activity_main
     }
@@ -142,6 +148,7 @@ class MainActivity : BaseActivity() {
         buttons.add(ButtonBean(1, "SoftInputMode软键盘适配"))
         buttons.add(ButtonBean(2, "Context的几种应用及区别"))
         buttons.add(ButtonBean(3, "Android版本及对应的Api"))
+        buttons.add(ButtonBean(4, "仿微信拖动图片到底部删除"))
         /// TODO 这里加相应的按钮
     }
 
@@ -150,6 +157,7 @@ class MainActivity : BaseActivity() {
             1 -> testSoftInputMode()
             2 -> testContext()
             3 -> testVersionApi()
+            4 -> selectPics()
             /// TODO 这里对相应按钮的点击事件做处理
         }
     }
@@ -175,6 +183,24 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         serviceIntent?.let { stopService(serviceIntent) }
+    }
+
+    private fun selectPics() {
+        MultiImageSelector.create()
+                .showCamera(true) // show camera or not. true by default
+                .count(9) // max select image size, 9 by default. used width #.multi()
+                .multi() // multi mode, default mode;
+                .start(this@MainActivity, REQUEST_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK) {//文章图片
+            data?.let {
+                PostImagesActivity.startPostActivity(this@MainActivity,
+                        data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT))
+            }
+        }
     }
 }
 

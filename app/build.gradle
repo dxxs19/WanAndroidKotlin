@@ -46,6 +46,16 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0-rc02'
+    // 图片拖动
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    api 'com.facebook.fresco:fresco:0.13.0'
+    api 'top.zibin:Luban:1.1.1'
+    api 'com.github.lovetuzitong:MultiImageSelector:1.2'
+    api 'com.github.bumptech.glide:glide:3.7.0'
+    api 'com.kuyue:utils:1.0.8'
+    implementation 'com.android.support:support-v4:28.0.0-rc02'
 }
 repositories {
     mavenCentral()
