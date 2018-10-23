@@ -29,12 +29,12 @@ class ForegroundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         setForeground()
         // 测试服务是否运行
-        thread = thread ?: Thread(mRunnable)
-        thread?.let {
-            if (!it.isAlive) {
-                it.start()
-            }
-        }
+//        thread = thread ?: Thread(mRunnable)
+//        thread?.let {
+//            if (!it.isAlive) {
+//                it.start()
+//            }
+//        }
         Log.e(TAG, "--- onStartCommand ---")
         return START_STICKY
     }

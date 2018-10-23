@@ -10,6 +10,7 @@ import android.view.View
 import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.activity.softinput.SoftInputModeActivity
 import com.wei.wanandroidkotlin.common.QuickAdapter
+import com.wei.wanandroidkotlin.imgcompress.CompressActivity
 import com.wei.wanandroidkotlin.keepalive.foregroundservice.ForegroundService
 import com.wei.wanandroidkotlin.keepalive.onepixelactivity.KeepAliveManager
 import com.wei.wanandroidkotlin.model.ButtonBean
@@ -149,6 +150,7 @@ class MainActivity : BaseActivity() {
         buttons.add(ButtonBean(2, "Context的几种应用及区别"))
         buttons.add(ButtonBean(3, "Android版本及对应的Api"))
         buttons.add(ButtonBean(4, "仿微信拖动图片到底部删除"))
+        buttons.add(ButtonBean(5, "图片压缩"))
         /// TODO 这里加相应的按钮
     }
 
@@ -158,6 +160,7 @@ class MainActivity : BaseActivity() {
             2 -> testContext()
             3 -> testVersionApi()
             4 -> selectPics()
+            5 -> {startActivity(Intent(this, CompressActivity::class.java))}
             /// TODO 这里对相应按钮的点击事件做处理
         }
     }

@@ -30,10 +30,9 @@
         <activity
             android:name=".activity.UpdateActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".widgets.imagedrag.PostImagesActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".widgets.imagedrag.PostImagesActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".keepalive.onepixelactivity.OnePixelActivity"
             android:excludeFromRecents="true"
@@ -48,7 +47,9 @@
         <service
             android:name=".keepalive.foregroundservice.AssistService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <activity android:name=".imgcompress.CompressActivity"/>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -119,7 +120,6 @@ public class PostImagesActivity extends AppCompatActivity {
             public void onItemLongClick(RecyclerView.ViewHolder vh) {
                 //如果item不是最后一个，则执行拖拽
                 if (vh.getLayoutPosition() != dragImages.size() - 1) {
-                    /// TODO 图片变大动画
                     largen(vh);
                     itemTouchHelper.startDrag(vh);
                 }
@@ -167,7 +167,7 @@ public class PostImagesActivity extends AppCompatActivity {
                 ObjectAnimator.ofInt(viewWrapper, "width", CommonUtils.getPixelById(R.dimen.article_img_dimens_big)),
                 ObjectAnimator.ofInt(viewWrapper, "height", CommonUtils.getPixelById(R.dimen.article_img_dimens_big))
         );
-        animatorSet.setDuration(300).start();
+        animatorSet.setDuration(100).start();
     }
 
     private void recover() {
