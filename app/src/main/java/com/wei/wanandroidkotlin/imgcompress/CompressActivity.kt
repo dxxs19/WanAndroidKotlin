@@ -12,6 +12,8 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 /**
+ *  一张图片处理过程，建议先进行等比压缩或者Matrix压缩后，再进行质量压缩，这样组合使用，不管是生成缩略图还是图片上传，效果都不错
+ *
  *  A代表透明度；R代表红色；G代表绿色；B代表蓝色。
  *
  *  ALPHA_8
@@ -56,9 +58,7 @@ class CompressActivity : BaseActivity() {
 
 //        rgb565(imgPath)
 
-        matrixCompress(imgPath, 0.5f, 0.5f)
-
-//        matrixCompress(imgPath, 0.5f, 0.5f)
+        matrixCompress(imgPath, targetWidth = 800, targetHeight = 1200)
 
 //        sampleCompress(imgPath, 600, 800)
 
@@ -84,12 +84,36 @@ class CompressActivity : BaseActivity() {
         ivResult?.setImageBitmap(bm)
     }
 
-    private fun matrixCompress(imgPath: String, widthScale: Float, heightScale: Float) {
-        val matrix = Matrix()
-        matrix.setScale(widthScale, heightScale)
-        matrix.postRotate(45f)
+    private fun matrixCompress(imgPath: String, offsetX: Int = 0, offsetY: Int = 0, targetWidth: Int, targetHeight: Int) {
+        // 构建原始位图
         val bitmap = BitmapFactory.decodeFile(imgPath)
-        val bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        // 获取原始宽高
+        val width = bitmap.width
+        val height = bitmap.height
+
+        // 计算宽高缩放比例，targetWidth，targetHeight 即期待缩放完成后位图的宽高
+        val scaleW = targetWidth / width.toFloat()
+        val scaleH = targetHeight / height.toFloat()
+
+        // 将缩放比例放进矩阵
+        val matrix = Matrix()
+        matrix.postScale(scaleW, scaleH)
+//        matrix.setScale(scaleW, scaleH)
+//        matrix.postRotate(45f)
+
+        // 这个方法作用非常多，详细解释一下各个参数的意义！
+        // bitmap：原始位图
+        // 第二到第五个参数，即截取原图哪一部分构建新位图，
+        // offsetX和offsetY代表在X轴和Y轴上的像素偏移量，即从哪个位置开始截取
+        // width和height代表截取多少个像素，但是要注意，offsetX+width应该小于等于原图的宽度
+        // offsetY+height小于等于原图高度，要不然会报错，因为截到原图外面去了
+        // 像下面这样填写，就代表截取整个原图，
+        // Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
+        // 如果填写100,100,200,200，就代表
+        // 从原图左上角往右和下各偏移100像素，然后往后和往下各截取200构建新位图
+        // matrix：缩放矩阵
+        // 最后一个参数表示如果矩阵里面还存放了过滤条件，是否按条件过滤（如果matrix里面只放了平移数据），最后一个参数设置成什么都不会生效
+        val bm = Bitmap.createBitmap(bitmap, offsetX, offsetY, width, height, matrix, true)
         Log.e(TAG, "压缩后图片的大小 : " + (bm.byteCount / 1024 / 1024)
                 + "M 宽度为 " + bm.width + " 高度为 " + bm.height)
 
@@ -100,34 +124,46 @@ class CompressActivity : BaseActivity() {
      *  采样率压缩
      *  压缩后图片的大小 : 15M 宽度为: 1728 高度为: 2304
      */
-    private fun sampleCompress(path: String, width: Int, height: Int) {
+    private fun sampleCompress(path: String, reqWidth: Int, reqHeight: Int) {
         val options = BitmapFactory.Options()
+        // inJustDecodeBounds设置为true,这样使用该option decode出来的Bitmap是null，
+        // 只是把长宽存放到option中
         options.inJustDecodeBounds = true
-        var bitmap = BitmapFactory.decodeFile(path, options)
+        // 此时bitmap为null
+        BitmapFactory.decodeFile(path, options)
+
+        // 设置缩放比例
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+        // 一定要记得将inJustDecodeBounds设为false，否则Bitmap为null
         options.inJustDecodeBounds = false
-
-        val outWidth = options.outWidth
-        val outHeight = options.outHeight
-
-        var ratio = 1
-
-        if (outWidth > outHeight && outWidth > width) {
-            ratio = outWidth / width
-        } else if (outHeight > outWidth && outHeight > height) {
-            ratio = outHeight / height
-        }
-
-        if (ratio <= 0) {
-            ratio = 1
-        }
-
-        options.inSampleSize = ratio
-        bitmap = BitmapFactory.decodeFile(path, options)
+        val bitmap = BitmapFactory.decodeFile(path, options)
 
         Log.e(TAG, "压缩后图片的大小 : " + (bitmap.byteCount / 1024 / 1024)
                 + "M 宽度为: " + bitmap.width + " 高度为: " + bitmap.height)
 //        ivResult?.setImageBitmap(bitmap)
         qualityCompress(bitmap, 200)
+    }
+
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+
+        val outWidth = options.outWidth
+        val outHeight = options.outHeight
+
+        var inSampleSize = 1 // 1是不缩放
+        // 计算宽高缩放比例
+
+        if (outHeight > reqHeight || outWidth > reqWidth) {
+            val heightRatio = Math.round(outHeight.toFloat() / reqHeight)
+            val widthRatio = Math.round(outWidth.toFloat() / reqWidth)
+            // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
+            // 一定都会大于等于目标的宽和高。
+            inSampleSize = if (heightRatio < widthRatio) {
+                heightRatio
+            } else {
+                widthRatio
+            }
+        }
+        return inSampleSize
     }
 
     /**
