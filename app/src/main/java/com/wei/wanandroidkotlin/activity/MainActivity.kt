@@ -2,11 +2,13 @@ package com.wei.wanandroidkotlin.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import android.widget.VideoView
 import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.activity.softinput.SoftInputModeActivity
 import com.wei.wanandroidkotlin.common.QuickAdapter
@@ -21,6 +23,7 @@ import com.wei.wanandroidkotlin.net.retrofit.RetrofitHelper
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxOperators
 import com.wei.wanandroidkotlin.widgets.imagedrag.PostImagesActivity
+import com.wei.wanandroidkotlin.widgets.video.VideoBackgroundView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -50,6 +53,8 @@ class MainActivity : BaseActivity() {
     private val num: Int
         get() = 10
     private var serviceIntent: Intent? = null
+    private var videoViewBg: VideoBackgroundView? = null
+//    private var videoViewBg: VideoView? = null
 
     private fun test() {
 //        RxJavaOperators.testFilter()
@@ -110,6 +115,12 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
+        initRecyclerView()
+        KeepAliveManager.registerBroadCast(this)
+        initVideoBg()
+    }
+
+    private fun initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView)
         val gridLayoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = gridLayoutManager
@@ -121,8 +132,25 @@ class MainActivity : BaseActivity() {
         })
 //        recyclerView.addItemDecoration()
         recyclerView.itemAnimator = DefaultItemAnimator()
+    }
 
-        KeepAliveManager.registerBroadCast(this)
+    private fun initVideoBg() {
+        videoViewBg = findViewById(R.id.video_bg)
+        videoViewBg?.setVideoURI(Uri.parse("android.resource://$packageName" + "/" + R.raw.video_bg))
+        videoViewBg?.start()
+        videoViewBg?.setOnCompletionListener {
+            videoViewBg?.start()
+        }
+    }
+
+    override fun onRestart() {
+        videoViewBg?.start()
+        super.onRestart()
+    }
+
+    override fun onStop() {
+        videoViewBg?.stopPlayback()
+        super.onStop()
     }
 
     override fun onDestroy() {
@@ -160,7 +188,9 @@ class MainActivity : BaseActivity() {
             2 -> testContext()
             3 -> testVersionApi()
             4 -> selectPics()
-            5 -> {startActivity(Intent(this, CompressActivity::class.java))}
+            5 -> {
+                startActivity(Intent(this, CompressActivity::class.java))
+            }
             /// TODO 这里对相应按钮的点击事件做处理
         }
     }
