@@ -21,12 +21,12 @@ public class MyCallBack extends ItemTouchHelper.Callback {
 
     private int dragFlags;
     private int swipeFlags;
-    private PostArticleImgAdapter adapter;
-    private List<String> images;//图片经过压缩处理
-    private List<String> originImages;//图片没有经过处理，这里传这个进来是为了使原图片的顺序与拖拽顺序保持一致
+    private RecyclerView.Adapter adapter;
+    private List<?> images;//图片经过压缩处理
+    private List<?> originImages;//图片没有经过处理，这里传这个进来是为了使原图片的顺序与拖拽顺序保持一致
     private boolean up;//手指抬起标记位
 
-    public MyCallBack(PostArticleImgAdapter adapter, List<String> images, List<String> originImages) {
+    public <T> MyCallBack(RecyclerView.Adapter adapter, List<T> images, List<T> originImages) {
         this.adapter = adapter;
         this.images = images;
         this.originImages = originImages;
@@ -193,7 +193,7 @@ public class MyCallBack extends ItemTouchHelper.Callback {
         return super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy);
     }
 
-    interface DragListener {
+    public interface DragListener {
         /**
          * 用户是否将 item拖动到删除处，根据状态改变颜色
          *
@@ -216,7 +216,7 @@ public class MyCallBack extends ItemTouchHelper.Callback {
 
     private DragListener dragListener;
 
-    void setDragListener(DragListener dragListener) {
+    public void setDragListener(DragListener dragListener) {
         this.dragListener = dragListener;
     }
 

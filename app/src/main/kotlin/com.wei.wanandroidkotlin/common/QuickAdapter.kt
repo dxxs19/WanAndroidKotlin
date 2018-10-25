@@ -50,9 +50,9 @@ abstract class QuickAdapter<T> constructor(private val datas: List<T>) : Recycle
         companion object {
             fun get(parent: ViewGroup, layoutId: Int): VH {
                 val convertView = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-                convertView.setOnClickListener{
-
-                }
+//                convertView.setOnClickListener{
+//
+//                }
                 return VH(convertView)
             }
         }

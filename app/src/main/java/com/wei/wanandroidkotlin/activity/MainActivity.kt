@@ -4,11 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.View
-import android.widget.VideoView
+import android.widget.TextView
 import com.wei.wanandroidkotlin.R
 import com.wei.wanandroidkotlin.activity.softinput.SoftInputModeActivity
 import com.wei.wanandroidkotlin.common.QuickAdapter
@@ -22,6 +23,8 @@ import com.wei.wanandroidkotlin.net.response.Translation2
 import com.wei.wanandroidkotlin.net.retrofit.RetrofitHelper
 import com.wei.wanandroidkotlin.rx.RxBus
 import com.wei.wanandroidkotlin.rx.RxOperators
+import com.wei.wanandroidkotlin.widgets.imagedrag.MyCallBack
+import com.wei.wanandroidkotlin.widgets.imagedrag.OnRecyclerItemClickListener
 import com.wei.wanandroidkotlin.widgets.imagedrag.PostImagesActivity
 import com.wei.wanandroidkotlin.widgets.video.VideoBackgroundView
 import io.reactivex.Observable
@@ -29,7 +32,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.nereo.multi_image_selector.MultiImageSelector
 import me.nereo.multi_image_selector.MultiImageSelectorActivity
-import java.util.*
 
 
 class MainActivity : BaseActivity() {
@@ -50,11 +52,12 @@ class MainActivity : BaseActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var buttons: java.util.ArrayList<ButtonBean>
+    private lateinit var dragButtons: java.util.ArrayList<ButtonBean>
     private val num: Int
         get() = 10
     private var serviceIntent: Intent? = null
     private var videoViewBg: VideoBackgroundView? = null
-//    private var videoViewBg: VideoView? = null
+    private var tvDelete: TextView? = null
 
     private fun test() {
 //        RxJavaOperators.testFilter()
@@ -122,7 +125,9 @@ class MainActivity : BaseActivity() {
 
     private fun initRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView)
-        val gridLayoutManager = GridLayoutManager(this, 2)
+        tvDelete = findViewById(R.id.tv_delete)
+//        val gridLayoutManager = GridLayoutManager(this, 2)
+        val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
         adapter.setOnClickListener(object : QuickAdapter.OnClickListener<ButtonBean> {
@@ -130,8 +135,55 @@ class MainActivity : BaseActivity() {
                 clickListener(t.type)
             }
         })
+
 //        recyclerView.addItemDecoration()
         recyclerView.itemAnimator = DefaultItemAnimator()
+
+        dragButtons = ArrayList()
+        dragButtons.addAll(buttons)
+        var callback = MyCallBack(adapter, dragButtons, buttons)
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        recyclerView.addOnItemTouchListener(
+                object : OnRecyclerItemClickListener(recyclerView) {
+                    override fun onItemClick(vh: RecyclerView.ViewHolder?) {
+//                        toast("点击了按钮")
+                    }
+
+                    override fun onItemLongClick(vh: RecyclerView.ViewHolder?) {
+                        vh?.let {
+                            itemTouchHelper.startDrag(it)
+                        }
+                    }
+                }
+        )
+        callback.setDragListener(
+                object : MyCallBack.DragListener {
+                    override fun deleteState(delete: Boolean) {
+                        if (delete) {
+                            tvDelete?.setBackgroundResource(R.color.holo_red_dark)
+                            tvDelete?.text = resources.getString(R.string.post_delete_tv_s)
+                        } else {
+                            tvDelete?.text = resources.getString(R.string.post_delete_tv_d)
+                            tvDelete?.setBackgroundResource(R.color.holo_red_light)
+                        }
+                    }
+
+                    override fun dragState(start: Boolean) {
+                        if (start) {
+                            tvDelete?.visibility = View.VISIBLE
+                        } else {
+                            tvDelete?.visibility = View.GONE
+                        }
+                    }
+
+                    override fun clearView() {
+                        // 刷新布局
+
+                    }
+                }
+        )
     }
 
     private fun initVideoBg() {

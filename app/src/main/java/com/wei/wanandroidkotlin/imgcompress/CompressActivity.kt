@@ -86,38 +86,40 @@ class CompressActivity : BaseActivity() {
 
     private fun matrixCompress(imgPath: String, offsetX: Int = 0, offsetY: Int = 0, targetWidth: Int, targetHeight: Int) {
         // 构建原始位图
-        val bitmap = BitmapFactory.decodeFile(imgPath)
-        // 获取原始宽高
-        val width = bitmap.width
-        val height = bitmap.height
+        val bitmap : Bitmap? = BitmapFactory.decodeFile(imgPath)
+        bitmap?.let {
+            // 获取原始宽高
+            val width = it.width
+            val height = it.height
 
-        // 计算宽高缩放比例，targetWidth，targetHeight 即期待缩放完成后位图的宽高
-        val scaleW = targetWidth / width.toFloat()
-        val scaleH = targetHeight / height.toFloat()
+            // 计算宽高缩放比例，targetWidth，targetHeight 即期待缩放完成后位图的宽高
+            val scaleW = targetWidth / width.toFloat()
+            val scaleH = targetHeight / height.toFloat()
 
-        // 将缩放比例放进矩阵
-        val matrix = Matrix()
-        matrix.postScale(scaleW, scaleH)
+            // 将缩放比例放进矩阵
+            val matrix = Matrix()
+            matrix.postScale(scaleW, scaleH)
 //        matrix.setScale(scaleW, scaleH)
 //        matrix.postRotate(45f)
 
-        // 这个方法作用非常多，详细解释一下各个参数的意义！
-        // bitmap：原始位图
-        // 第二到第五个参数，即截取原图哪一部分构建新位图，
-        // offsetX和offsetY代表在X轴和Y轴上的像素偏移量，即从哪个位置开始截取
-        // width和height代表截取多少个像素，但是要注意，offsetX+width应该小于等于原图的宽度
-        // offsetY+height小于等于原图高度，要不然会报错，因为截到原图外面去了
-        // 像下面这样填写，就代表截取整个原图，
-        // Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
-        // 如果填写100,100,200,200，就代表
-        // 从原图左上角往右和下各偏移100像素，然后往后和往下各截取200构建新位图
-        // matrix：缩放矩阵
-        // 最后一个参数表示如果矩阵里面还存放了过滤条件，是否按条件过滤（如果matrix里面只放了平移数据），最后一个参数设置成什么都不会生效
-        val bm = Bitmap.createBitmap(bitmap, offsetX, offsetY, width, height, matrix, true)
-        Log.e(TAG, "压缩后图片的大小 : " + (bm.byteCount / 1024 / 1024)
-                + "M 宽度为 " + bm.width + " 高度为 " + bm.height)
+            // 这个方法作用非常多，详细解释一下各个参数的意义！
+            // bitmap：原始位图
+            // 第二到第五个参数，即截取原图哪一部分构建新位图，
+            // offsetX和offsetY代表在X轴和Y轴上的像素偏移量，即从哪个位置开始截取
+            // width和height代表截取多少个像素，但是要注意，offsetX+width应该小于等于原图的宽度
+            // offsetY+height小于等于原图高度，要不然会报错，因为截到原图外面去了
+            // 像下面这样填写，就代表截取整个原图，
+            // Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
+            // 如果填写100,100,200,200，就代表
+            // 从原图左上角往右和下各偏移100像素，然后往后和往下各截取200构建新位图
+            // matrix：缩放矩阵
+            // 最后一个参数表示如果矩阵里面还存放了过滤条件，是否按条件过滤（如果matrix里面只放了平移数据），最后一个参数设置成什么都不会生效
+            val bm = Bitmap.createBitmap(bitmap, offsetX, offsetY, width, height, matrix, true)
+            Log.e(TAG, "压缩后图片的大小 : " + (bm.byteCount / 1024 / 1024)
+                    + "M 宽度为 " + bm.width + " 高度为 " + bm.height)
 
-        ivResult?.setImageBitmap(bm)
+            ivResult?.setImageBitmap(bm)
+        }
     }
 
     /**

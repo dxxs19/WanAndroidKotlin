@@ -28,4 +28,14 @@
         android:layout_alignParentBottom="true"
         android:hint="@string/current_mode"/>
 
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/article_post_delete"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_red_light"
+        android:gravity="center"
+        android:text="@string/post_delete_tv_d"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 </RelativeLayout>
