@@ -58,6 +58,7 @@ class MainActivity : BaseActivity() {
     private var serviceIntent: Intent? = null
     private var videoViewBg: VideoBackgroundView? = null
     private var tvDelete: TextView? = null
+    private var rxKotlin = RxOperators()
 
     private fun test() {
 //        RxJavaOperators.testFilter()
@@ -69,13 +70,13 @@ class MainActivity : BaseActivity() {
 //        AOPTest.computePlus(10, 20000000)
 //        RxJavaOperators.testFlatMap()
 //        RxJavaOperators.testCreate()
-        val rxKotlin = RxOperators()
-        rxKotlin.testCreate()
+//        rxKotlin.testCreate()
 //        rxKotlin.testBuffer()
 //        testFlatMap()
 //        rxKotlin.testCombine()
 //        rxKotlin.testFilter()
 //        rxKotlin.testBoolean()
+        rxKotlin.testInterval()
     }
 
     lateinit var observable1: Observable<Translation1>
@@ -231,6 +232,7 @@ class MainActivity : BaseActivity() {
         buttons.add(ButtonBean(3, "Android版本及对应的Api"))
         buttons.add(ButtonBean(4, "仿微信拖动图片到底部删除"))
         buttons.add(ButtonBean(5, "图片压缩"))
+        buttons.add(ButtonBean(6, "rx测试"))
         /// TODO 这里加相应的按钮
     }
 
@@ -243,6 +245,7 @@ class MainActivity : BaseActivity() {
             5 -> {
                 startActivity(Intent(this, CompressActivity::class.java))
             }
+            6 -> rxKotlin.testInterval()
             /// TODO 这里对相应按钮的点击事件做处理
         }
     }

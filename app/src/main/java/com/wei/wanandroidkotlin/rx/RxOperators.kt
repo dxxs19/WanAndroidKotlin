@@ -7,11 +7,13 @@ import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class RxOperators {
     val TAG = javaClass.name
-    lateinit var disposable: Disposable
+    var disposable: Disposable? = null
 
     companion object {
         val testArray = arrayListOf(1, 29, 20, 32, 11, 19)
@@ -40,6 +42,26 @@ class RxOperators {
 
         override fun onComplete() {
             Log.e(TAG, "事件处理完成！")
+        }
+    }
+
+    var count = 0
+    var period = 1
+    fun testInterval() {
+        dispose()
+        disposable = Observable.interval(0, 3, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .subscribe {
+                    count ++
+                    Log.e("rx", "第${count}次interval : " + System.currentTimeMillis())
+                }
+    }
+
+    private fun dispose() {
+        disposable?.let {
+            it.dispose()
+            disposable = null
+            count = 0
         }
     }
 

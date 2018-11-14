@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,8 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -120,7 +119,7 @@ public class PostImagesActivity extends AppCompatActivity {
             public void onItemLongClick(RecyclerView.ViewHolder vh) {
                 //如果item不是最后一个，则执行拖拽
                 if (vh.getLayoutPosition() != dragImages.size() - 1) {
-                    largen(vh);
+//                    largen(vh);
                     itemTouchHelper.startDrag(vh);
                 }
             }
@@ -149,8 +148,8 @@ public class PostImagesActivity extends AppCompatActivity {
 
             @Override
             public void clearView() {
-                recover();
-                refreshLayout();
+//                recover();
+//                refreshLayout();
             }
         });
     }
@@ -237,6 +236,8 @@ public class PostImagesActivity extends AppCompatActivity {
                     dragImages.add(addIndex, filePath);
                     originImages.add(addIndex++, filePath);
                 }
+
+                Log.e("PostImagesActivity", images.get(i));
             }
             Message message = new Message();
             message.what = 1;

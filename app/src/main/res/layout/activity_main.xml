@@ -1,41 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.wei.wanandroidkotlin.widgets.video.VideoBackgroundView
-        android:id="@+id/video_bg"
+    <data>
+        <variable
+            name="button"
+            type="com.wei.wanandroidkotlin.model.ButtonBean"/>
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <!--<VideoView-->
+        <com.wei.wanandroidkotlin.widgets.video.VideoBackgroundView
+            android:id="@+id/video_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--<VideoView-->
         <!--android:id="@+id/video_bg"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_centerInParent="true"/>-->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <EditText
-        android:id="@+id/et_mode"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:hint="@string/current_mode"/>
+        <EditText
+            android:id="@+id/et_mode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:text="@{button.text}" />
 
-    <TextView
-        android:id="@+id/tv_delete"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/article_post_delete"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/holo_red_light"
-        android:gravity="center"
-        android:text="@string/post_delete_tv_d"
-        android:textColor="@color/white"
-        android:visibility="gone"/>
-</RelativeLayout>
+        <com.wei.wanandroidkotlin.widgets.GridPasswordView
+            android:id="@+id/paymng_et_pwd"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:gpvGridColor="#ffffff"
+            app:gpvLineColor="#a4a9bd"
+            app:gpvLineWidth="1dp"
+            app:gpvPasswordLength="6"
+            app:gpvPasswordTransformation="*"
+            app:gpvPasswordType="numberPassword"
+            app:gpvTextColor="#2196F3"
+            app:gpvTextSize="25sp" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/article_post_delete"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/holo_red_light"
+            android:gravity="center"
+            android:text="@string/post_delete_tv_d"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>
