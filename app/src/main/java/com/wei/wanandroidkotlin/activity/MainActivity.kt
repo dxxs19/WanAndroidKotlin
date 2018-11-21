@@ -3,6 +3,7 @@ package com.wei.wanandroidkotlin.activity
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -76,7 +77,9 @@ class MainActivity : BaseActivity() {
 //        rxKotlin.testCombine()
 //        rxKotlin.testFilter()
 //        rxKotlin.testBoolean()
-        rxKotlin.testInterval()
+//        rxKotlin.testInterval()
+        val test = "A" to "B"
+        Log.e(TAG, test.first.plus(",").plus(test.second))
     }
 
     lateinit var observable1: Observable<Translation1>
@@ -163,11 +166,15 @@ class MainActivity : BaseActivity() {
                 object : MyCallBack.DragListener {
                     override fun deleteState(delete: Boolean) {
                         if (delete) {
-                            tvDelete?.setBackgroundResource(R.color.holo_red_dark)
-                            tvDelete?.text = resources.getString(R.string.post_delete_tv_s)
+                            tvDelete?.apply {
+                                setBackgroundResource(R.color.holo_red_dark)
+                                text = resources.getString(R.string.post_delete_tv_s)
+                            }
                         } else {
-                            tvDelete?.text = resources.getString(R.string.post_delete_tv_d)
-                            tvDelete?.setBackgroundResource(R.color.holo_red_light)
+                            tvDelete?.apply {
+                                setBackgroundResource(R.color.holo_red_light)
+                                text = resources.getString(R.string.post_delete_tv_d)
+                            }
                         }
                     }
 
@@ -244,10 +251,17 @@ class MainActivity : BaseActivity() {
             4 -> selectPics()
             5 -> {
                 startActivity(Intent(this, CompressActivity::class.java))
+                doBlock {
+                    Log.e(TAG, "block test")
+                }
             }
             6 -> rxKotlin.testInterval()
             /// TODO 这里对相应按钮的点击事件做处理
         }
+    }
+
+    private fun <T> T.doBlock(block: T.() -> Unit) {
+        block()
     }
 
     private fun testVersionApi() {
