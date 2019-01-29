@@ -23,6 +23,7 @@ import com.wei.wanandroidkotlin.net.response.Translation1
 import com.wei.wanandroidkotlin.net.response.Translation2
 import com.wei.wanandroidkotlin.net.retrofit.RetrofitHelper
 import com.wei.wanandroidkotlin.rx.RxBus
+import com.wei.wanandroidkotlin.rx.RxJavaOperators
 import com.wei.wanandroidkotlin.rx.RxOperators
 import com.wei.wanandroidkotlin.widgets.imagedrag.MyCallBack
 import com.wei.wanandroidkotlin.widgets.imagedrag.OnRecyclerItemClickListener
@@ -125,6 +126,11 @@ class MainActivity : BaseActivity() {
         initRecyclerView()
         KeepAliveManager.registerBroadCast(this)
         initVideoBg()
+        getLocation()
+    }
+
+    private fun getLocation() {
+
     }
 
     private fun initRecyclerView() {
